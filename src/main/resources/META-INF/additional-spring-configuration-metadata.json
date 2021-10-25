@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "active.thymeleaf.cache",
+      "type": "java.lang.String",
+      "description": "Description for active.thymeleaf.cache."
+  }
+] }

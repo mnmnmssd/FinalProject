@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.blog_system.mapper.TagsMapper" >
+    <select id="selectCounts" resultType="com.example.blog_system.entity.Tag">
+        SELECT categories as text, COUNT(categories) as weight
+        FROM `t_article` GROUP BY categories
+    </select>
+    <select id="selectArticleByTag" resultType="com.example.blog_system.entity.Article"  parameterType="java.lang.String" >
+        SELECT *
+        FROM `t_article`
+        where categories = #{categories,jdbcType=VARCHAR}
+    </select>
+    <select id="getTags" resultType="java.lang.String">
+        SELECT categories as text
+        FROM `t_article` GROUP BY categories
+    </select>
+</mapper>

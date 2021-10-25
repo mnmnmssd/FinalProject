@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='评论管理',active='category'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script th:src="@{http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js}"></script>
+    <link th:href="@{/back/css/jqcloud.css}" rel="stylesheet"/>
+    <script th:src="@{/back/js/jqcloud-1.0.4.min.js}"></script>
+</head>
+
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div id="example" class="container">
+
+            </div>
+        </div>
+        <div>
+            <div th:replace=" back/footer :: footer-content"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="back/footer :: footer"></div>
+<script th:inline="javascript" type="text/javascript">
+    /*!
+     * Create an array of word objects, each representing a word in the cloud
+     */
+
+    var tagList = [[${tagList}]];
+    console.log(tagList)
+
+    var word_array = tagList
+    $(function () {
+        // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+        $("#example").jQCloud(word_array, {
+            height: 850
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blog_system.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.example.blog_system.entity.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="a_id" jdbcType="INTEGER" property="aId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.blog_system.entity.Comment">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, author, a_id
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByAid" resultType="com.example.blog_system.entity.Comment">
+      select * from t_comment where article_id=#{aid} order by id desc
+    </select>
+  <select id="selectComments" resultType="com.example.blog_system.entity.Comment">
+    select * from t_comment order by id desc
+  </select>
+  <select id="countComment" resultType="java.lang.Integer">
+    select count(1) from t_comment
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByAid">
+    delete from t_comment
+    where article_id = #{aid, jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.blog_system.entity.Comment">
+    insert into t_comment (id, author, article_id, content,created,status)
+    values (#{id,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{ArticleId,jdbcType=INTEGER},
+      #{content,jdbcType=LONGVARCHAR}, #{Created,jdbcType=DATE}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.blog_system.entity.Comment">
+    insert into t_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="aId != null">
+        a_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="aId != null">
+        #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.blog_system.entity.Comment">
+    update t_comment
+    <set>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="aId != null">
+        a_id = #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.blog_system.entity.Comment">
+    update t_comment
+    set author = #{author,jdbcType=VARCHAR},
+      a_id = #{aId,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.blog_system.entity.Comment">
+    update t_comment
+    set author = #{author,jdbcType=VARCHAR},
+      a_id = #{aId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
